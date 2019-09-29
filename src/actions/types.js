@@ -1,0 +1,1 @@
+export const SEARCH_IMAGES = 'SEARCH_IMAGES';
