@@ -5,27 +5,26 @@ import { Container, Form, Button, Label } from 'semantic-ui-react';
 
 import { searchImages } from '../actions';
 
+const renderInput = ({ input, meta }) => {
+    return (
+        <>
+            <input {...input}
+                autoComplete="off"
+                placeholder="Search free high-resolution photos" />
+            { meta.touched && meta.error && <Label basic color='red' pointing>{meta.error}</Label>}
+        </>
+    )
+}
+
 const ImgSearch = props => {
 
     const onSearchSubmit = (formProps) => {
         if (formProps.imgTitle) {
             props.searchImages(formProps.imgTitle)
-
         }
     }
 
-
-    const { pristine, reset, submitting } = props
-
-    const renderInput = ({ input, meta }) => {
-
-        return (
-            <>
-                <input {...input} placeholder="Search free high-resolution photos"  />
-                {meta.touched && meta.error && <Label basic color='red' pointing>{meta.error}</Label>}
-            </>
-        )
-    }
+    const { pristine, reset, submitting } = props;
 
     return (
         <Container>
@@ -38,7 +37,6 @@ const ImgSearch = props => {
                         component={renderInput}
                         type="text"
                         validation="requaired"
-                        
                     />
                 </Form.Field>
                 <Form.Field>

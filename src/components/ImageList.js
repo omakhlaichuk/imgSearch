@@ -15,7 +15,7 @@ class ImageList extends React.Component {
             const col = this.props.colunms.values.colNum || "auto-fill";
             const imgWidth = maxImgWidth(col);
             return (
-                <Container>
+                <Container key={this.props.colunms.values.colNum}>
                     <div className="image-list" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${imgWidth}px,1fr))` }}>
                         {this.props.images.map(img => { return <ImageCard key={img.id} image={img} imgWidth={imgWidth} /> })}
                     </div>
