@@ -1,65 +1,69 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
+import { Container, Form, Button, Label } from 'semantic-ui-react';
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import { searchImages } from '../actions';
 
-
-
 const ImgSearch = props => {
-    
+
     const onSearchSubmit = (formProps) => {
-        console.log(formProps.imgTitle);
-        if (formProps.imgTitle){
-         props.searchImages(formProps.imgTitle)
+        if (formProps.imgTitle) {
+            props.searchImages(formProps.imgTitle)
 
         }
     }
 
-    const renderImgTitle = formProps => {
+
+    const { pristine, reset, submitting } = props
+
+    const renderInput = ({ input, meta }) => {
+
         return (
-            <Form.Group controlId="imageSearch.imgTitle">
-                <Form.Label>Image Search</Form.Label>
-                <Form.Control
-                    type="text"
-                    onChange={formProps.input.onChange}
-                    value={formProps.input.value}
-                />
-                <div>{formProps.meta.pristine ? formProps.meta.error : ""} </div>
-            </Form.Group>
+            <>
+                <input {...input} placeholder="Search free high-resolution photos"  />
+                {meta.touched && meta.error && <Label basic color='red' pointing>{meta.error}</Label>}
+            </>
         )
     }
-
-    const renderColNum = formProps => {
-        return (
-            <Form.Group controlId="imageSearch.colNum">
-                <Form.Label>Number of Columns</Form.Label>
-                <Form.Control
-                    as="select"
-                    onChange={formProps.input.onChange}
-                    value={formProps.input.value}>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                </Form.Control>
-            </Form.Group>
-        )
-    }
-
-    
 
     return (
-        <Form onSubmit={props.handleSubmit(onSearchSubmit)}>
-            <Field name="imgTitle" component={renderImgTitle} />
-            <Field name="colNum" component={renderColNum} />
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
+        <Container>
+            <h1>Images from Unsplash</h1>
+
+            <Form onSubmit={props.handleSubmit(onSearchSubmit)}>
+                <Form.Field>
+                    <Field
+                        name="imgTitle"
+                        component={renderInput}
+                        type="text"
+                        validation="requaired"
+                        
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <label>Number of columns:</label>
+                    <Field name="colNum" component="select">
+                        <option value="">auto-fill</option>
+                        {[1, 2, 3, 4, 5].map(col => (
+                            <option value={col} key={col}>
+                                {col}
+                            </option>
+                        ))}
+                    </Field>
+                </Form.Field>
+
+                <Button primary type="submit" disabled={pristine || submitting}>
+                    Search
+                    </Button>
+                <Button type="button" disabled={pristine || submitting} onClick={() => {
+                    reset();
+                    props.searchImages("")
+                }}>
+                    Reset
+                    </Button>
+            </Form>
+        </Container>
     )
 }
 const validate = formValues => {
@@ -72,5 +76,6 @@ const validate = formValues => {
 export default connect(null, { searchImages })(
     reduxForm({
         form: 'imageSearch',
+        validate
     })(ImgSearch)
 )
