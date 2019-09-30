@@ -7,18 +7,15 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import App from './components/App';
 import reducers from './reducers';
 
-//const store=createStore(reducers,applyMiddleware(thunk), composeWithDevTools());
 const store = createStore(
-    reducers,
-    
-    compose(
-      applyMiddleware(thunk),
-      window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
-    )
-  );
+  reducers,
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : f => f
+  )
+);
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App />
-    </Provider >, document.getElementById('root'));
-
+  <Provider store={store}>
+    <App />
+  </Provider >, document.getElementById('root'));
